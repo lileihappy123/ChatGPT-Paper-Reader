@@ -19,17 +19,28 @@ BASE_POINTS = """
 
 class OpenAIBotCore(object):
 
-    def __init__(self, api_key, model='gpt-3.5-turbo', temperature=0.2, context_size=4096, proxy=None) -> None:
-        openai.api_key = api_key
-        openai.proxy = proxy
+    def __init__(self, api_key, model='gpt-3.5-turbo-0301', temperature=0.2, context_size=4096, proxy=None) -> None:
+        # openai.api_key = api_key
+        # openai.proxy = proxy
+        openai.api_type = "azure"
+
+        openai.api_key = "91b50af3bc7642efbc0df5bfad192214"
+
+        # The base URL for your Azure OpenAI resource. e.g. "https://<your resource name>.openai.azure.com"
+        openai.api_base = "https://openai-lilei.openai.azure.com/"
+
+        # Currently OPENAI API have the following versions available: 2022-12-01
+        openai.api_version = "2023-03-15-preview"
         self.model = model
+        self.engine = "gpt-35"
         self.temperature = temperature
         self.context_szie = context_size
 
     def communicate(self, msg: List[dict], return_raw_text=True):
         
         response = openai.ChatCompletion.create(
-            model=self.model,
+            # model=self.model,
+            engine=self.engine,
             messages=msg,
             temperature=self.temperature
         )
